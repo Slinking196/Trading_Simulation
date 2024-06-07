@@ -65,8 +65,7 @@ class Environment():
 
             entry_fee = self.fee_ratio * (1 / self.entry_price)
             exit_fee = self.fee_ratio * (1 / self.exit_price)
-            funding_fee = self.fee_ratio * self.entry_price
-            fee_paid = entry_fee + exit_fee + funding_fee
+            fee_paid = entry_fee + exit_fee
 
             rewards = gross_pnl - (fee_paid)
             end = True
