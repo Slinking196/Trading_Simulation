@@ -1,0 +1,9 @@
+pandas_ta==0.3.14b0
+pandas==2.2.2
+numpy==1.26.4
+opencv-python==4.10.0.82
+mealpy==3.0.1
+gymnasium==0.29.1
+backtesting==0.3.3
+matplotlib==3.9.0
+scikit-learn==1.5.0
