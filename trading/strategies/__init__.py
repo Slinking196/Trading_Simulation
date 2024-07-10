@@ -1,0 +1,1 @@
+from trading.strategies.Strategy2sma import Strategy2sma

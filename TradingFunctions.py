@@ -107,7 +107,7 @@ class Strategy2sma_porcentaje(Strategy):
                 self.max_in_long = self.data.Close[-1]
                 self.stop_loss_long = self.data.Close[-1]*self.x[3]
             # close pos long
-            if (self.data.Close[-1]>self.stop_win_long) or (self.data.Close[-1]<self.stop_loss_long):
+            if (self.data.Close[-1] > self.stop_win_long) or (self.data.Close[-1] <self.stop_loss_long):
                 self.position.close()
 
         # IN POS SHORT
