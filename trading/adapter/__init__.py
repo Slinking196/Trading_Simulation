@@ -1,0 +1,2 @@
+from trading.adapter.DataAdapter import DataAdapter
+from trading.adapter.Data2SmaPorcentaje import Data2SmaPorcentaje
