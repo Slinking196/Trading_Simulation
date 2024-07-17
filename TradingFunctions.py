@@ -147,6 +147,7 @@ class Strategy4sma_porcentaje(Strategy):
         # OPEN POS
         if not self.position.is_long and not self.position.is_short:
             # LONG 
+            
             if self.sma1[-2]<=self.sma2[-2] and self.sma1[-1]>self.sma2[-1]:
                 self.buy()
                 self.max_in_long = self.data.Close[-1]
@@ -256,6 +257,7 @@ class Strategy2sma_porcentaje(Strategy):
     
     def next(self):
         # OPEN POS
+        print(f"sma1[-2]: {self.sma1[-2]} sma2[-2]: {self.sma2[-2]}; sma1[-1]: {self.sma1[-1]} sma2[-1]: {self.sma2[-1]}")
         if not self.position.is_long and not self.position.is_short:
             # LONG 
             if self.sma1[-2]<=self.sma2[-2] and self.sma1[-1]>self.sma2[-1]:

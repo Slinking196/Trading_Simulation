@@ -5,11 +5,12 @@ from trading.utils import BET_STATES, ACTIONS
 from trading.adapter import DataAdapter
 
 class Environment():
-    def __init__(self, file_name: str, data_adapter: DataAdapter) -> None:
+    def __init__(self, file: str | pd.DataFrame, data_adapter: DataAdapter, cash: int) -> None:
         self.__data_adapter = data_adapter
-        self.__data = self.__prepare_init_data__(file_name)
+        self.__data = self.__prepare_init_data__(file)
         self.__fee_ratio = 0.0005
-        self.__money = 1          
+        self.__cash = cash
+        self.__init_cash = cash       
         self.__entry_price = 0    
         self.__exit_price = 0     
         self.__trading_state = BET_STATES.WAITING
@@ -18,13 +19,13 @@ class Environment():
 
         self.__time = 0          
 
-    def __prepare_init_data__(self, file_name: str):
-        df = pd.read_csv(file_name)
+    def __prepare_init_data__(self, file: str | pd.DataFrame):
+        df = file if type(file) == pd.DataFrame else pd.read_csv(file)
 
         return self.__data_adapter.get_history(df)
     
     def reset(self) -> None:
-        self.__money = 1
+        self.__cash = self.__init_cash
         self.__entry_price = 0
         self.__exit_price = 0
         self.__trading_state = BET_STATES.WAITING
@@ -52,16 +53,17 @@ class Environment():
         elif act == ACTIONS.CLOSE_POS.value:
             self.__exit_price = state['close']
 
-            if self.__trading_state == BET_STATES.IN_LONG: gross_pnl = self.__money * ((1 / self.__entry_price) - (1 / self.__exit_price))
-            elif self.__trading_state == BET_STATES.IN_SHORT: gross_pnl = self.__money * ((1 / self.__exit_price) - (1 / self.__entry_price))
+            if self.__trading_state == BET_STATES.IN_LONG: gross_pnl = self.__cash * ((1 / self.__entry_price) - (1 / self.__exit_price))
+            elif self.__trading_state == BET_STATES.IN_SHORT: gross_pnl = self.__cash * ((1 / self.__exit_price) - (1 / self.__entry_price))
 
-            entry_fee = self.__money * self.__fee_ratio * (1 / self.__entry_price)
-            exit_fee = self.__money * self.__fee_ratio * (1 / self.__exit_price)
+            entry_fee = self.__cash * self.__fee_ratio * (1 / self.__entry_price)
+            exit_fee = self.__cash * self.__fee_ratio * (1 / self.__exit_price)
             fee_paid = entry_fee + exit_fee
 
-            rewards = gross_pnl - (fee_paid)
+            rewards = gross_pnl - fee_paid
 
-            self.__money += rewards
+            self.__trading_state = BET_STATES.WAITING
+            self.__cash += rewards
         
         elif (self.__trading_state == BET_STATES.IN_LONG and self.__reference_point < state['close']) or \
             (self.__trading_state == BET_STATES.IN_SHORT and self.__reference_point > state['close']):
@@ -76,6 +78,11 @@ class Environment():
 
         return rewards, new_state, False
     
+    def get_summary(self) -> None:
+        return_percent = (100 * self.__cash) / self.__init_cash
+
+        print(f"Return [%] {round(return_percent, 1):>40}")
+    
     def get_data(self):
         return self.__data
 
@@ -86,7 +93,7 @@ class Environment():
         return actual
 
     def get_money(self) -> float:
-        return self.__money
+        return self.__cash
     
     def get_traiding_state(self) -> BET_STATES:
         return self.__trading_state

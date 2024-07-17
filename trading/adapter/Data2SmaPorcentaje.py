@@ -22,7 +22,7 @@ class Data2SmaPorcentaje(DataAdapter):
         df['sma_' + str(self.__n_sma1) + '_prev'] = df['sma_' + str(self.__n_sma1)].shift(1)
         df['sma_' + str(self.__n_sma2) + '_prev'] = df['sma_' + str(self.__n_sma2)].shift(1)
         df_cleaned = df.dropna()
-        df_cleaned = df_cleaned.drop(columns= ['volume'])
+        if 'volume' in df_cleaned: df_cleaned = df_cleaned.drop(columns= ['volume'])
         df_cleaned.reset_index(drop=True, inplace=True)
 
         return df_cleaned
