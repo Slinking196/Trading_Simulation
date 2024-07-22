@@ -7,7 +7,7 @@ class Data2SmaPorcentaje(DataAdapter):
         self.__n_sma1 = n_sma1
         self.__n_sma2 = n_sma2
 
-    def get_history(self, df: DataFrame) -> DataFrame:
+    def get_history(self, df_: DataFrame) -> DataFrame:
         """df_grouped = df.groupby(df.index // range_time).agg({
                         'open_time': 'first',
                         'open': 'first',
@@ -17,6 +17,8 @@ class Data2SmaPorcentaje(DataAdapter):
                         'volume': 'sum'
                     }).reset_index(drop=True)"""
         
+
+        df = df_[df_['open_time']%(5*60000)==0].copy()        
         df['sma_' + str(self.__n_sma1)] = ta.sma(df['close'], self.__n_sma1)
         df['sma_' + str(self.__n_sma2)] = ta.sma(df['close'], self.__n_sma2)
         df['sma_' + str(self.__n_sma1) + '_prev'] = df['sma_' + str(self.__n_sma1)].shift(1)

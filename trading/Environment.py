@@ -53,11 +53,11 @@ class Environment():
         elif act == ACTIONS.CLOSE_POS.value:
             self.__exit_price = state['close']
 
-            if self.__trading_state == BET_STATES.IN_LONG: gross_pnl = self.__cash * ((1 / self.__entry_price) - (1 / self.__exit_price))
-            elif self.__trading_state == BET_STATES.IN_SHORT: gross_pnl = self.__cash * ((1 / self.__exit_price) - (1 / self.__entry_price))
+            if self.__trading_state == BET_STATES.IN_LONG: gross_pnl = self.__exit_price * self.__cash * ((1 / self.__entry_price) - (1 / self.__exit_price))
+            elif self.__trading_state == BET_STATES.IN_SHORT: gross_pnl = self.__exit_price * self.__cash * ((1 / self.__exit_price) - (1 / self.__entry_price))
 
-            entry_fee = self.__cash * self.__fee_ratio * (1 / self.__entry_price)
-            exit_fee = self.__cash * self.__fee_ratio * (1 / self.__exit_price)
+            entry_fee = self.__cash * self.__fee_ratio
+            exit_fee =  (self.__cash/self.__entry_price) * self.__exit_price *  self.__fee_ratio
             fee_paid = entry_fee + exit_fee
 
             rewards = gross_pnl - fee_paid
@@ -79,7 +79,7 @@ class Environment():
         return rewards, new_state, False
     
     def get_summary(self) -> None:
-        return_percent = (100 * self.__cash) / self.__init_cash
+        return_percent = (100 * self.__cash - self.__init_cash) / self.__init_cash
 
         print(f"Return [%] {round(return_percent, 1):>40}")
     
@@ -97,3 +97,6 @@ class Environment():
     
     def get_traiding_state(self) -> BET_STATES:
         return self.__trading_state
+    
+    def get_time(self) -> int:
+        return self.__time
