@@ -1,5 +1,5 @@
 from pandas import Series
-from trading.strategies import TraidingStrategy
+from trading.strategies.simulation import TraidingStrategy
 from trading.utils import BET_STATES, ACTIONS
 import numpy as np
 

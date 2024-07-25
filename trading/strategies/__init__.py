@@ -1,2 +1,0 @@
-from trading.strategies.TraidingStrategy import TraidingStrategy
-from trading.strategies.Sma2Porcentaje import Sma2Porcentaje
