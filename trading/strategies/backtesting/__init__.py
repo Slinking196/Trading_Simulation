@@ -1,0 +1,6 @@
+from trading.strategies.backtesting.Strategy2sma_atr_inicial import Strategy2sma_atr_inicial
+from trading.strategies.backtesting.Strategy2sma_porcentaje import Strategy2sma_porcentaje
+from trading.strategies.backtesting.Strategy4sma_atr_inicial import Strategy4sma_atr_inicial
+from trading.strategies.backtesting.Strategy4sma_porcentaje import Strategy4sma_porcentaje
+from trading.strategies.backtesting.SuperStrategy_atr import SuperStategy_atr
+from trading.strategies.backtesting.SuperStrategy_porcentaje import SuperStategy_porcentaje
