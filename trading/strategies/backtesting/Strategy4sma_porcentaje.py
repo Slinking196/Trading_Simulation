@@ -1,6 +1,7 @@
 from backtesting import Strategy
 from trading.technical_indicators import SMA
 import pandas as pd
+import numpy as np
 
 class Strategy4sma_porcentaje(Strategy):
     # x = [ 0=> len_sma1, 
@@ -11,7 +12,7 @@ class Strategy4sma_porcentaje(Strategy):
     #       5=> factor_sll,
     #       6=> factor_sws,
     #       7=> factor_sls]
-    # x = np.array([0,0,0,0,0,0])
+    x = np.array([0,0,0,0,0,0,0,0])
 
     def init(self):
         data = {
